@@ -36,11 +36,12 @@ background-image: url("info_ruta_bg_2.png");
 
 .kort{
 width: 85px;
-heigth: 115px;
+height: 115px;
 background-image: url("kort.png");
 padding: 8px 5px;
 font-weight: 800;
 float: right;
+box-sizing: border-box;
 /*position: absolute;*/
 /*visibility: hidden;*/
 }
@@ -48,30 +49,41 @@ float: right;
 <script type="text/javascript">
 var players = [];
 var selected = "";
-function ScrumCard(value){
+
+
+function ScrumCard(value, ownerName){
 this.value = value;
+this.owner = ownerName;
+console.log(this.owner);
 this.elementMe = function(){
 var myDiv = document.createElement("div");
 myDiv.className = "kort";
-myDiv.innerHTML = this.value;
+myDiv.innerHTML = this.owner + "<br>" + this.value;
 document.getElementById("arena").appendChild(myDiv);
 }
+
+this.setOwner = function(owner){
+this.owner = owner;
+console.log(this.owner);
 }
+
+}
+
 function Scrummer(name){
 this.name = name;
 this.cards = [];
-this.noll = new ScrumCard(0);
-this.halv = new ScrumCard(0.5);
-this.ett = new ScrumCard(1);
-this.tvau = new ScrumCard(2);
-this.tre = new ScrumCard(3);
-this.fem = new ScrumCard(5);
-this.autta = new ScrumCard(8);
-this.tretton = new ScrumCard(13);
-this.tjugo = new ScrumCard(20);
-this.fyrtio = new ScrumCard(40);
-this.hundra = new ScrumCard(100);
-this.inget = new ScrumCard("vet ej");
+this.noll = new ScrumCard(0, name);
+this.halv = new ScrumCard(0.5, name);
+this.ett = new ScrumCard(1, name);
+this.tvau = new ScrumCard(2, name);
+this.tre = new ScrumCard(3, name);
+this.fem = new ScrumCard(5, name);
+this.autta = new ScrumCard(8, name);
+this.tretton = new ScrumCard(13, name);
+this.tjugo = new ScrumCard(20, name);
+this.fyrtio = new ScrumCard(40, name);
+this.hundra = new ScrumCard(100, name);
+this.inget = new ScrumCard("vet ej", name);
 
 this.cards.push(this.noll);
 this.cards.push(this.halv);
@@ -116,7 +128,8 @@ return myDiv;
 }
 
 this.showMyCard = function(){
-alert(this.valtKort);
+//alert(this.valtKort);
+this.valtKort.elementMe();
 }
 
 this.getMyPosition = function(){
@@ -156,9 +169,16 @@ btnx.innerHTML = players[selected-1].cards[i].value;
 
 btnx.addEventListener("click", function(){
 //Sätt spelarens valtKort
-players[selected-1].valtKort = this.innerHTML;
+console.log(players[selected-1].valtKort);
+
+if(players[selected-1].valtKort == "inget"){
+players[selected-1].valtKort = new ScrumCard(this.innerHTML, players[selected-1].name);
 //visa det
 players[selected-1].showMyCard();
+}
+else{
+alert("Spelare har redan valt kort");
+}
 });
 
 
