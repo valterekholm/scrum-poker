@@ -3,11 +3,27 @@
 <head>
 <meta charset="utf-8">
 <style>
+body{
+position: relative;
+}
 .player{
 width:40px;
 height:30px;
 border: 1px solid black;
 padding: 10px;
+}
+#arena{
+height: 500px;
+width: 100%;
+background-color: #333;
+}
+#info_ruta{
+width:50px;
+height:40px;
+background-image: url("info_ruta_bg.png");
+position:absolute;
+top:0;
+right:0;
 }
 </style>
 <script type="text/javascript">
@@ -48,7 +64,16 @@ myDiv.addEventListener("click", function(){alert(this.id)});
 return myDiv;
 }
 
+this.showMyCard = function(){
+
 }
+
+}
+
+function showMyChosenCard(){
+}
+
+
 </script>
 </head>
 <body>
@@ -58,7 +83,8 @@ return myDiv;
 
 </div>
 <button type="button" id="addPlayer">Add player</button>
-
+<div id="info_ruta">
+</div>
 <script type="text/javascript">
 window.onload = function(){
 var addPlayerBtn = document.getElementById("addPlayer");
@@ -69,7 +95,7 @@ var arena = document.getElementById("arena");
 players.push(scr_x);
 
 arena.appendChild(scr_x.elementMe());
-alert(players.length);
+//alert(players.length);
 });
 }
 </script>
