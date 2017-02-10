@@ -45,7 +45,10 @@ this.tjugo = new ScrumCard(20);
 this.fyrtio = new ScrumCard(40);
 this.hundra = new ScrumCard(100);
 this.king = new ScrumCard("vet ej");
-this.valtKort = "";
+this.valtKort = "inget";
+this.myDiv = "";
+
+this.nummer = players.length+1;//min position
 
 this.setCard = function(kort){
 this.valtKort = kort;
@@ -58,22 +61,39 @@ return this.valtKort;
 this.elementMe = function(){
 var myDiv = document.createElement("div");
 myDiv.className = "player";
-myDiv.id = "player_" + this.name;
+myDiv.id = "player_" + this.nummer;
 myDiv.innerHTML = this.name;
 myDiv.addEventListener("click", function(){alert(this.id)});
+myDiv.addEventListener("mouseenter", function(){
+showMyChosenCard(this.id);
+});//alert(this.valtKort?"har kort":"Har inte valt kort")
+this.myDiv = myDiv;
 return myDiv;
 }
 
 this.showMyCard = function(){
+alert(this.valtKort);
+}
 
+this.getMyPosition = function(){
+return this.nummer;
+}
+
+this.showMyCard = function(){
+document.getElementById("info_ruta").innerHTML = this.valtKort;
 }
 
 }
 
-function showMyChosenCard(){
+function showMyChosenCard(playerId){
+var positionPlayer = playerId.substring(playerId.lastIndexOf('_')+1, playerId.length);
+//alert(positionPlayer);
+fillInfoRuta(players[positionPlayer-1].valtKort);
 }
 
-
+function fillInfoRuta(text){
+document.getElementById("info_ruta").innerHTML = text;
+}
 </script>
 </head>
 <body>
