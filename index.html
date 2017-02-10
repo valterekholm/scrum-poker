@@ -11,6 +11,8 @@ width:40px;
 height:30px;
 border: 1px solid black;
 padding: 10px;
+margin: 20px auto;
+box-shadow: 10px 10px 3px #223349;
 }
 #arena{
 height: 500px;
@@ -19,20 +21,45 @@ background-color: #333;
 }
 #info_ruta{
 width:50px;
-height:40px;
-background-image: url("info_ruta_bg.png");
 position:absolute;
 top:0;
 right:0;
 }
+#blue_stripe{
+height: 5px;
+background-image: url("info_ruta_bg_1.png");
+}
+#info_content{
+height: 60px;
+background-image: url("info_ruta_bg_2.png");
+}
+
+.kort{
+width: 85px;
+heigth: 115px;
+background-image: url("kort.png");
+padding: 8px 5px;
+font-weight: 800;
+float: right;
+/*position: absolute;*/
+/*visibility: hidden;*/
+}
 </style>
 <script type="text/javascript">
 var players = [];
+var selected = "";
 function ScrumCard(value){
 this.value = value;
+this.elementMe = function(){
+var myDiv = document.createElement("div");
+myDiv.className = "kort";
+myDiv.innerHTML = this.value;
+document.getElementById("arena").appendChild(myDiv);
+}
 }
 function Scrummer(name){
 this.name = name;
+this.cards = [];
 this.noll = new ScrumCard(0);
 this.halv = new ScrumCard(0.5);
 this.ett = new ScrumCard(1);
@@ -44,7 +71,21 @@ this.tretton = new ScrumCard(13);
 this.tjugo = new ScrumCard(20);
 this.fyrtio = new ScrumCard(40);
 this.hundra = new ScrumCard(100);
-this.king = new ScrumCard("vet ej");
+this.inget = new ScrumCard("vet ej");
+
+this.cards.push(this.noll);
+this.cards.push(this.halv);
+this.cards.push(this.ett);
+this.cards.push(this.tvau);
+this.cards.push(this.tre);
+this.cards.push(this.fem);
+this.cards.push(this.autta);
+this.cards.push(this.tretton);
+this.cards.push(this.tjugo);
+this.cards.push(this.fyrtio);
+this.cards.push(this.hundra);
+this.cards.push(this.inget);
+
 this.valtKort = "inget";
 this.myDiv = "";
 
@@ -63,10 +104,13 @@ var myDiv = document.createElement("div");
 myDiv.className = "player";
 myDiv.id = "player_" + this.nummer;
 myDiv.innerHTML = this.name;
-myDiv.addEventListener("click", function(){alert(this.id)});
+myDiv.addEventListener("click", function(){selected = getTrailingNumber(this.id); setButtons(this.id)});
 myDiv.addEventListener("mouseenter", function(){
 showMyChosenCard(this.id);
-});//alert(this.valtKort?"har kort":"Har inte valt kort")
+});
+myDiv.addEventListener("mouseleave", function(){
+document.getElementById("info_ruta").childNodes[1].innerHTML = "";
+});
 this.myDiv = myDiv;
 return myDiv;
 }
@@ -79,10 +123,11 @@ this.getMyPosition = function(){
 return this.nummer;
 }
 
-this.showMyCard = function(){
-document.getElementById("info_ruta").innerHTML = this.valtKort;
+
 }
 
+function getTrailingNumber(text){
+return text.substring(text.lastIndexOf('_')+1, text.length);
 }
 
 function showMyChosenCard(playerId){
@@ -92,7 +137,34 @@ fillInfoRuta(players[positionPlayer-1].valtKort);
 }
 
 function fillInfoRuta(text){
-document.getElementById("info_ruta").innerHTML = text;
+document.getElementById("info_ruta").childNodes[1].innerHTML = text;
+}
+
+function setButtons(playerId){
+var btnArea = document.getElementById("knapp_ruta");
+btnArea.innerHTML = "";
+btnArea.appendChild(document.createTextNode(players[selected-1].name));
+
+//Skapar knappar
+for(var i=0; i<12; i++){
+var btnx = document.createElement("button");
+btnx.type = "button";
+btnx.id = "btn_"+i;
+btnx.innerHTML = players[selected-1].cards[i].value;
+
+//sätt deras funktion
+
+btnx.addEventListener("click", function(){
+//Sätt spelarens valtKort
+players[selected-1].valtKort = this.innerHTML;
+//visa det
+players[selected-1].showMyCard();
+});
+
+
+btnArea.appendChild(btnx);
+}
+
 }
 </script>
 </head>
@@ -104,18 +176,22 @@ document.getElementById("info_ruta").innerHTML = text;
 </div>
 <button type="button" id="addPlayer">Add player</button>
 <div id="info_ruta">
+<div id="blue_stripe"></div>
+<div id="info_content"></div>
+</div>
+<div id="knapp_ruta">
+
 </div>
 <script type="text/javascript">
 window.onload = function(){
 var addPlayerBtn = document.getElementById("addPlayer");
+//För att lägga till player
 addPlayerBtn.addEventListener("click", function(){
 var scr_x = new Scrummer(prompt("Ange nytt namn"));
-
 var arena = document.getElementById("arena");
 players.push(scr_x);
-
 arena.appendChild(scr_x.elementMe());
-//alert(players.length);
+//kort
 });
 }
 </script>
