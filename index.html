@@ -145,8 +145,12 @@ return text.substring(text.lastIndexOf('_')+1, text.length);
 
 function showMyChosenCard(playerId){
 var positionPlayer = playerId.substring(playerId.lastIndexOf('_')+1, playerId.length);
-//alert(positionPlayer);
+if(typeof players[positionPlayer-1].valtKort === "string"){
 fillInfoRuta(players[positionPlayer-1].valtKort);
+}
+else{
+fillInfoRuta(players[positionPlayer-1].valtKort.value);
+}
 }
 
 function fillInfoRuta(text){
