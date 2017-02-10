@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <style>
 .player{
-width:130px;
-height:90px;
+width:40px;
+height:30px;
 border: 1px solid black;
-padding: 10%;
+padding: 10px;
 }
 </style>
 <script type="text/javascript">
@@ -42,7 +42,9 @@ return this.valtKort;
 this.elementMe = function(){
 var myDiv = document.createElement("div");
 myDiv.className = "player";
+myDiv.id = "player_" + this.name;
 myDiv.innerHTML = this.name;
+myDiv.addEventListener("click", function(){alert(this.id)});
 return myDiv;
 }
 
@@ -61,7 +63,6 @@ return myDiv;
 window.onload = function(){
 var addPlayerBtn = document.getElementById("addPlayer");
 addPlayerBtn.addEventListener("click", function(){
-alert("Add player");
 var scr_x = new Scrummer(prompt("Ange nytt namn"));
 
 var arena = document.getElementById("arena");
